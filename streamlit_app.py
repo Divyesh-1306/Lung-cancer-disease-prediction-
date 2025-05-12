@@ -20,9 +20,9 @@ IMG_WIDTH, IMG_HEIGHT = 128, 128
 class_labels = ['Benign', 'Malignant', 'Normal']
 
 # Function to preprocess the image
-def preprocess_image(image_data):
+def preprocess_image(uploaded_file):
     try:
-        img = Image.open(io.BytesIO(image_data)).resize((IMG_WIDTH, IMG_HEIGHT)).convert('RGB')
+        img = Image.open(uploaded_file).resize((IMG_WIDTH, IMG_HEIGHT)).convert('RGB')
         img_array = np.array(img) / 255.0
         img_array = np.expand_dims(img_array, axis=0)
         return img_array
@@ -38,10 +38,10 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg
 if uploaded_file is not None:
     # Display the uploaded image
     image = Image.open(uploaded_file)
-    st.image(image, caption='Uploaded Image.', use_column_width=True)
+    st.image(image, caption='Uploaded Image.', use_container_width=True)
 
     # Make a prediction
-    processed_image = preprocess_image(uploaded_file.read())
+    processed_image = preprocess_image(uploaded_file)
 
     if processed_image is not None:
         try:
