@@ -1,3 +1,6 @@
+import os
+os.system("chmod +x setup.sh")
+
 import streamlit as st
 import tensorflow as tf
 from tensorflow import keras
