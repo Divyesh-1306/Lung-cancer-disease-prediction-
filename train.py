@@ -8,7 +8,7 @@ from keras import models
 from keras import layers
 
 # Define data directories
-DATA_DIR = 'The IQ-OTHNCCD lung cancer dataset/The IQ-OTHNCCD lung cancer dataset'
+DATA_DIR = r'C:\Users\Divyesh N\.cache\kagglehub\datasets\adityamahimkar\iqothnccd-lung-cancer-dataset\versions\2\The IQ-OTHNCCD lung cancer dataset\The IQ-OTHNCCD lung cancer dataset'
 BENIGN_DIR = os.path.join(DATA_DIR, 'Bengin cases')
 MALIGNANT_DIR = os.path.join(DATA_DIR, 'Malignant cases')
 NORMAL_DIR = os.path.join(DATA_DIR, 'Normal cases')
