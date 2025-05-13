@@ -1,6 +1,5 @@
-tensorflow==2.19.0
-streamlit==1.45.0
-Pillow==11.1.0
-scikit-learn==1.6.1
-h5py==3.13.0
-kagglehub==0.3.12
+streamlit
+tensorflow
+pandas
+numpy
+scikit-learn
