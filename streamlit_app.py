@@ -12,7 +12,14 @@ import io
 model_path = os.path.join(os.getcwd(), 'lung_cancer_model.h5')
 model_url = "https://drive.google.com/uc?export=download&id=120kjABeUv9lzs6U9S9xa14KCXY2cMtwb"  # Replace with your direct link
 
-# Download the model if it doesn't exist
+# Check if the file was downloaded correctly
+if os.path.exists(model_path):
+    if os.path.getsize(model_path) < 1:  # Check if the file size is too small
+        st.error("Downloaded file is corrupted or incomplete. Please check the file link.")
+        os.remove(model_path)  # Remove the corrupted file
+        st.stop()
+
+# Download the model if it doesn't exist or is corrupted
 if not os.path.exists(model_path):
     st.write("Downloading model...")
     try:
@@ -21,6 +28,11 @@ if not os.path.exists(model_path):
             for chunk in response.iter_content(chunk_size=8192):
                 if chunk:
                     f.write(chunk)
+        # Verify the file size
+        if os.path.getsize(model_path) < 1:
+            st.error("Downloaded file is corrupted or incomplete. Please check the file link.")
+            os.remove(model_path)
+            st.stop()
         st.write("Model downloaded successfully!")
     except Exception as e:
         st.error(f"Error downloading model: {e}")
