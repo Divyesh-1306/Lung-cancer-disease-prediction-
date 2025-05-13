@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 
 # Define the model path and Google Drive link
-model_path = os.path.join(os.getcwd(), 'lung_cancer_model.h5')
+model_path = "C:/Users/Divyesh N/Downloads/archive (1)/lung_cancer_model.h5"
 # Check if the file exists
 if not os.path.exists(model_path):
     st.error(f"Model file not found at {model_path}. Please ensure the file exists.")
