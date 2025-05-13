@@ -1,42 +1,17 @@
 import os
 import requests
-os.system("chmod +x setup.sh")
-import tensorflow as tf 
+import tensorflow as tf
 import streamlit as st
 from tensorflow import keras
 from PIL import Image
 import numpy as np
-import io
 
 # Define the model path and Google Drive link
 model_path = os.path.join(os.getcwd(), 'lung_cancer_model.h5')
-model_url = "https://drive.google.com/file/d/1c4AJjIwCULo-MBV_Hf-2rWc7gI75Sg8Z/view?usp=sharing"  # Replace with your direct link
-
-# Check if the file was downloaded correctly
-if os.path.exists(model_path):
-    if os.path.getsize(model_path) < 1:  # Check if the file size is too small
-        st.error("Downloaded file is corrupted or incomplete. Please check the file link.")
-        os.remove(model_path)  # Remove the corrupted file
-        st.stop()
-
-# Download the model if it doesn't exist or is corrupted
+# Check if the file exists
 if not os.path.exists(model_path):
-    st.write("Downloading model...")
-    try:
-        response = requests.get(model_url, stream=True)
-        with open(model_path, 'wb') as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    f.write(chunk)
-        # Verify the file size
-        if os.path.getsize(model_path) < 1:
-            st.error("Downloaded file is corrupted or incomplete. Please check the file link.")
-            os.remove(model_path)
-            st.stop()
-        st.write("Model downloaded successfully!")
-    except Exception as e:
-        st.error(f"Error downloading model: {e}")
-        st.stop()
+    st.error(f"Model file not found at {model_path}. Please ensure the file exists.")
+    st.stop()
 
 # Load the trained model
 try:
