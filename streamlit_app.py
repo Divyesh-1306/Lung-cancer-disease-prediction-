@@ -1,16 +1,34 @@
 import os
+import requests
 os.system("chmod +x setup.sh")
-
+import tensorflow as tf 
 import streamlit as st
-import tensorflow as tf
 from tensorflow import keras
 from PIL import Image
 import numpy as np
 import io
 
+# Define the model path and Google Drive link
+model_path = os.path.join(os.getcwd(), 'lung_cancer_model.h5')
+model_url = "https://drive.google.com/uc?export=download&id=120kjABeUv9lzs6U9S9xa14KCXY2cMtwb"  # Replace with your direct link
+
+# Download the model if it doesn't exist
+if not os.path.exists(model_path):
+    st.write("Downloading model...")
+    try:
+        response = requests.get(model_url, stream=True)
+        with open(model_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
+        st.write("Model downloaded successfully!")
+    except Exception as e:
+        st.error(f"Error downloading model: {e}")
+        st.stop()
+
 # Load the trained model
 try:
-    model = keras.models.load_model('lung_cancer_model.h5')
+    model = keras.models.load_model(model_path)
     st.write("Model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading model: {e}")
