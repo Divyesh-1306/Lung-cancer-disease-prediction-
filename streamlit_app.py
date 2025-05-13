@@ -10,7 +10,7 @@ import io
 
 # Define the model path and Google Drive link
 model_path = os.path.join(os.getcwd(), 'lung_cancer_model.h5')
-model_url = "https://drive.google.com/uc?export=download&id=120kjABeUv9lzs6U9S9xa14KCXY2cMtwb"  # Replace with your direct link
+model_url = "https://drive.google.com/file/d/1c4AJjIwCULo-MBV_Hf-2rWc7gI75Sg8Z/view?usp=sharing"  # Replace with your direct link
 
 # Check if the file was downloaded correctly
 if os.path.exists(model_path):
