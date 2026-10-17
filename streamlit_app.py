@@ -1,0 +1,65 @@
+from pathlib import Path
+
+import streamlit as st
+from tensorflow import keras
+from PIL import Image
+import numpy as np
+
+MODEL_PATH = Path(__file__).resolve().parent / "lung_cancer_model.h5"
+
+if not MODEL_PATH.exists():
+    st.error(f"Model file not found at {MODEL_PATH}. Please ensure the file exists.")
+    st.stop()
+
+
+@st.cache_resource
+def load_model():
+    return keras.models.load_model(MODEL_PATH, compile=False)
+
+
+try:
+    model = load_model()
+    st.write("Model loaded successfully!")
+except Exception as e:
+    st.error(f"Error loading model: {e}")
+    st.stop()
+
+# Define image dimensions
+IMG_WIDTH, IMG_HEIGHT = 128, 128
+
+# Define class labels
+class_labels = ['Benign', 'Malignant', 'Normal']
+
+# Function to preprocess the image
+def preprocess_image(uploaded_file):
+    try:
+        img = Image.open(uploaded_file).resize((IMG_WIDTH, IMG_HEIGHT)).convert('RGB')
+        img_array = np.array(img) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
+        return img_array
+    except Exception as e:
+        st.error(f"Error preprocessing image: {e}")
+        return None
+
+# Streamlit app
+st.title('Lung Cancer Prediction')
+
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
+
+if uploaded_file is not None:
+    # Display the uploaded image
+    image = Image.open(uploaded_file)
+    st.image(image, caption='Uploaded Image.', use_container_width=True)
+
+    # Make a prediction
+    processed_image = preprocess_image(uploaded_file)
+
+    if processed_image is not None:
+        try:
+            prediction = model.predict(processed_image)
+            predicted_class = np.argmax(prediction)
+            predicted_label = class_labels[predicted_class]
+
+            st.write(f'## Prediction: {predicted_label}')
+        except Exception as e:
+            st.error(f"Error making prediction: {e}")
